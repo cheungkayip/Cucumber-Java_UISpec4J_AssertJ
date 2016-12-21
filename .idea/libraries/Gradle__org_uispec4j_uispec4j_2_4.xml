@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.uispec4j:uispec4j:2.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.uispec4j/uispec4j/2.4/d22fb6b98533765a8a9fdaf55b92fd3f049b82ae/uispec4j-2.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.uispec4j/uispec4j/2.4/b9bcb6590e2eda5c8924f8798a4d0d44c40dcb30/uispec4j-2.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
