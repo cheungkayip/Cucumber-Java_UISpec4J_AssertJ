@@ -4,6 +4,8 @@ import sun.reflect.generics.scope.DummyScope;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class DemoSwing extends JFrame {
     private static final String gapList[] = {"0", "10", "15", "20"};
@@ -75,6 +77,33 @@ public class DemoSwing extends JFrame {
             }
         });
 
+    }
+
+    private ListSelectionListener listListener() {
+        ListSelectionListener lsl = new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                System.out.print("First index: " + listSelectionEvent.getFirstIndex());
+                System.out.print(", Last index: " + listSelectionEvent.getLastIndex());
+                boolean adjust = listSelectionEvent.getValueIsAdjusting();
+                System.out.println(", Adjusting? " + adjust);
+                if (!adjust) {
+                    JList list = (JList) listSelectionEvent.getSource();
+                    int selections[] = list.getSelectedIndices();
+                    Object selectionValues[] = list.getSelectedValues();
+                    for (int i = 0, n = selections.length; i < n; i++) {
+                        if (i == 0) {
+                            System.out.print("  Selections: ");
+                        }
+                        field1.setText("");
+                        field1.setText("You have Selected: " + selectionValues[i]);
+                        System.out.print(selections[i] + "/" + selectionValues[i] + " ");
+                    }
+                    System.out.println();
+                }
+            }
+        };
+        return lsl;
     }
 
     private void checkboxListener(final JCheckBox checkbox) {
@@ -174,6 +203,11 @@ public class DemoSwing extends JFrame {
         jPanel3.add(list1);
         jPanel3.add(list2);
         jPanel3.add(list3);
+
+        // Add the Lists to some listeners
+        list1.addListSelectionListener(listListener());
+        list2.addListSelectionListener(listListener());
+        list3.addListSelectionListener(listListener());
 
         applyGapsListener(applyButton); // Do some action with Apply Gaps button
 
