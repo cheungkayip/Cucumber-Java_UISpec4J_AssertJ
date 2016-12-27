@@ -1,9 +1,9 @@
-package nl.ns.balieapp.stepdefs;
+package nl.ns.demoswing.stepdefs;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import nl.ns.balieapp.impl.DemoSwing;
+import nl.ns.demoswing.impl.DemoSwing;
 import org.uispec4j.*;
 import org.uispec4j.interception.MainClassAdapter;
 
@@ -48,7 +48,7 @@ public class TestSwingStepDefs extends UISpecTestCase {
     @When("^I click the button")
     public void i_click_button() throws Throwable {
         // 1. Click the button1
-        button.click();
+        Mouse.click(button);
     }
 
     @Then("^I should see the JTextField change to \"([^\"]*)\"$")
