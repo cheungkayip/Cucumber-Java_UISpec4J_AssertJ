@@ -1,4 +1,6 @@
 package nl.ns.demoswing.impl;
+import sun.reflect.generics.scope.DummyScope;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -8,13 +10,14 @@ public class DemoSwing extends JFrame {
     private final static int maxGap = 20;
 
     private GridLayout gridLayout1 = new GridLayout(0,2);
-    private GridLayout gridLayout2 = new GridLayout(2,2);
+    private GridLayout gridLayout2 = new GridLayout(0,3);
+    private GridLayout gridLayout3 = new GridLayout(2,2);
 
+    private JFrame jFrame = new JFrame("GridLayout Demo Swing Application");
 
-    private JPanel jPanel1 = new JPanel(); // For the labels, textfields, Buttons
-    private JPanel jPanel2 = new JPanel(); // for the apply gaps
-//    private BoxLayout boxLayout1 = new BoxLayout(jPanel1,BoxLayout.PAGE_AXIS);
-//    private BoxLayout boxLayout2 = new BoxLayout(jPanel2,BoxLayout.PAGE_AXIS);
+    private JPanel jPanel1 = new JPanel(); // For the JLabel, JTextfields, JButtons
+    private JPanel jPanel2 = new JPanel(); // for the JComboxbox apply gaps
+    private JPanel jPanel3 = new JPanel(); // For JCheckbox and JList
 
     private JComboBox horGapComboBox;
     private JComboBox verGapComboBox;
@@ -42,6 +45,14 @@ public class DemoSwing extends JFrame {
     private JCheckBox checkbox1 = new JCheckBox("Checkbox1");
     private JCheckBox checkbox2 = new JCheckBox("Checkbox2");
     private JCheckBox checkbox3 = new JCheckBox("Checkbox3");
+
+    DefaultListModel lm1 = new DefaultListModel();
+    DefaultListModel lm2 = new DefaultListModel();
+    DefaultListModel lm3 = new DefaultListModel();
+
+    private JList list1 = new JList(lm1);
+    private JList list2 = new JList(lm2);
+    private JList list3 = new JList(lm3);
 
     private DemoSwing(String name) {
         super(name);
@@ -103,11 +114,17 @@ public class DemoSwing extends JFrame {
         });
     }
 
+    private void addSomeElementsToList(DefaultListModel lm) {
+        for(int i = 1; i <= 3; i++) {
+            lm.addElement("Item " + i);
+        }
+    }
+
     private void addComponentsToPane(final Container pane) {
         initGaps();
-
         jPanel1.setLayout(gridLayout1);
         jPanel2.setLayout(gridLayout2);
+        jPanel3.setLayout(gridLayout3);
 
         //Set up components preferred size
         Dimension buttonSize = fakeButton.getPreferredSize();
@@ -116,6 +133,7 @@ public class DemoSwing extends JFrame {
 
         //Add labels + buttons to experiment with Grid Layout
         jPanel1.add(label1Button);
+
         jPanel1.add(button1);
 
         jPanel1.add(label2Button);
@@ -131,15 +149,8 @@ public class DemoSwing extends JFrame {
         jPanel1.add(button5);
 
         jPanel1.add(resultLabel);
-        field1.setSize(new Dimension(2,2));
-        jPanel1.add(field1);
 
-        jPanel1.add(label1Checkbox);
-        jPanel1.add(checkbox1);
-        jPanel1.add(label2Checkbox);
-        jPanel1.add(checkbox2);
-        jPanel1.add(label3Checkbox);
-        jPanel1.add(checkbox3);
+        jPanel1.add(field1);
 
         //Add controls to set up horizontal and vertical gaps
         jPanel2.add(new Label("Horizontal gap:"));
@@ -149,6 +160,20 @@ public class DemoSwing extends JFrame {
         jPanel2.add(verGapComboBox);
         jPanel2.add(applyButton);
 
+        jPanel3.add(label1Checkbox);
+        jPanel3.add(checkbox1);
+        jPanel3.add(label2Checkbox);
+        jPanel3.add(checkbox2);
+        jPanel3.add(label3Checkbox);
+        jPanel3.add(checkbox3);
+
+        addSomeElementsToList(lm1);
+        addSomeElementsToList(lm2);
+        addSomeElementsToList(lm3);
+
+        jPanel3.add(list1);
+        jPanel3.add(list2);
+        jPanel3.add(list3);
 
         applyGapsListener(applyButton); // Do some action with Apply Gaps button
 
@@ -163,8 +188,11 @@ public class DemoSwing extends JFrame {
         checkboxListener(checkbox3);
 
         pane.add(jPanel1, BorderLayout.NORTH);
-        pane.add(new JSeparator(), BorderLayout.CENTER);
-        pane.add(jPanel2, BorderLayout.SOUTH);
+//        pane.add(new JSeparator(), BorderLayout.CENTER);
+        pane.add(jPanel2, BorderLayout.CENTER);
+        pane.add(jPanel3, BorderLayout.SOUTH);
+
+        setPreferredSize(new Dimension(800,600));
     }
 
     /**
