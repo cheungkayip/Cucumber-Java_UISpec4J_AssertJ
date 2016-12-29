@@ -1,16 +1,19 @@
 package nl.ns.demoswing.impl;
-import sun.reflect.generics.scope.DummyScope;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class DemoSwing extends JFrame {
     private static final String gapList[] = {"0", "10", "15", "20"};
     private final static int maxGap = 20;
 
+    private static ArrayList<String> itemList = new ArrayList<String>();
+    private static int jListItemCount = 0;
     private GridLayout gridLayout1 = new GridLayout(0,2);
     private GridLayout gridLayout2 = new GridLayout(0,3);
     private GridLayout gridLayout3 = new GridLayout(2,2);
@@ -144,8 +147,12 @@ public class DemoSwing extends JFrame {
     }
 
     private void addSomeElementsToList(DefaultListModel lm) {
-        for(int i = 1; i <= 3; i++) {
-            lm.addElement("Item " + i);
+        if(itemList.size() <= 8) {
+            for (int i = 1; i <= 3; i++) {
+                itemList.add("Item " + jListItemCount);
+                lm.addElement(itemList.get(jListItemCount));
+                jListItemCount++;
+            }
         }
     }
 
@@ -199,7 +206,9 @@ public class DemoSwing extends JFrame {
         addSomeElementsToList(lm1);
         addSomeElementsToList(lm2);
         addSomeElementsToList(lm3);
-
+        list1.setName("List1");
+        list2.setName("List2");
+        list3.setName("List3");
         jPanel3.add(list1);
         jPanel3.add(list2);
         jPanel3.add(list3);
@@ -227,6 +236,7 @@ public class DemoSwing extends JFrame {
         pane.add(jPanel3, BorderLayout.SOUTH);
 
         setPreferredSize(new Dimension(800,600));
+        System.out.println("ArrayList itemSize: " + itemList.size());
     }
 
     /**
@@ -257,6 +267,7 @@ public class DemoSwing extends JFrame {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
+
             }
         });
     }
