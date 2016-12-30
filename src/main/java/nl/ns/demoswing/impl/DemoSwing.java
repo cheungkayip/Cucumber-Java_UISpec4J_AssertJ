@@ -15,7 +15,7 @@ public class DemoSwing extends JFrame {
     private static ArrayList<String> itemList = new ArrayList<String>();
     private GridLayout gridLayout1 = new GridLayout(0,2);
     private GridLayout gridLayout2 = new GridLayout(0,3);
-    private GridLayout gridLayout3 = new GridLayout(3,2);
+    private GridLayout gridLayout3 = new GridLayout(4,2);
     private GridLayout gridLayout4 = new GridLayout(0,2);
     private JFrame jFrame = new JFrame("GridLayout Demo Swing Application");
 
@@ -63,6 +63,8 @@ public class DemoSwing extends JFrame {
     private void initGaps() {
         horGapComboBox = new JComboBox(gapList);
         verGapComboBox = new JComboBox(gapList);
+        horGapComboBox.setName("horGap");
+        verGapComboBox.setName("verGap");
     }
 
     private void createButtonListener(JButton buttonObject) {
@@ -82,23 +84,16 @@ public class DemoSwing extends JFrame {
         ListSelectionListener lsl = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                System.out.print("First index: " + listSelectionEvent.getFirstIndex());
-                System.out.print(", Last index: " + listSelectionEvent.getLastIndex());
                 boolean adjust = listSelectionEvent.getValueIsAdjusting();
-                System.out.println(", Adjusting? " + adjust);
                 if (!adjust) {
                     JList list = (JList) listSelectionEvent.getSource();
                     int selections[] = list.getSelectedIndices();
                     Object selectionValues[] = list.getSelectedValues();
                     for (int i = 0, n = selections.length; i < n; i++) {
-                        if (i == 0) {
-                            System.out.print("  Selections: ");
-                        }
                         field1.setText("");
                         field1.setText("You have selected " + selectionValues[i]);
-                        System.out.print(selections[i] + "/" + selectionValues[i] + " ");
+                        System.out.println("  Selections: " + selections[i] + "/" + selectionValues[i] + " ");
                     }
-                    System.out.println();
                 }
             }
         };
@@ -138,18 +133,18 @@ public class DemoSwing extends JFrame {
                 gridLayout1.setVgap(Integer.parseInt(verGap));
                 //Set up the layout of the buttons
                 gridLayout1.layoutContainer(jPanel1);
+                field1.setText("");
+                field1.setText("You have set the Hgap: " + gridLayout1.getHgap() + " and the Vgap to " + gridLayout1.getVgap());
             }
         });
     }
 
     private void addSomeElementsToList(DefaultListModel lm) {
-
             for (int i = 0; i <= 8; i++) {
                 itemList.add("Item " + i);
                 lm.addElement(itemList.get(i));
             }
         }
-
 
     private void addComponentsToPane(final Container pane) {
         initGaps();
@@ -165,24 +160,19 @@ public class DemoSwing extends JFrame {
 
         //Add labels + buttons to experiment with Grid Layout
         jPanel1.add(label1Button);
+        jPanel1.add(label2Button);
+        jPanel1.add(label3Button);
+        jPanel1.add(label4Button);
+        jPanel1.add(label5Button);
 
         jPanel1.add(button1);
-
-        jPanel1.add(label2Button);
         jPanel1.add(button2);
-
-        jPanel1.add(label3Button);
         jPanel1.add(button3);
-
-        jPanel1.add(label4Button);
         jPanel1.add(button4);
-
-        jPanel1.add(label5Button);
         jPanel1.add(button5);
 
-        jPanel1.add(resultLabel);
-
-        jPanel1.add(field1);
+        jPanel3.add(resultLabel);
+        jPanel3.add(field1);
 
         //Add controls to set up horizontal and vertical gaps
         jPanel2.add(new Label("Horizontal gap:"));

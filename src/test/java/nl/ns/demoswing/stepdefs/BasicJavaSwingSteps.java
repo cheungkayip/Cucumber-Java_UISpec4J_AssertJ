@@ -1,5 +1,6 @@
 package nl.ns.demoswing.stepdefs;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -10,9 +11,10 @@ import org.uispec4j.interception.MainClassAdapter;
 public class BasicJavaSwingSteps extends UISpecTestCase {
 
     private Window window;
-    private Button button;
+    private Button button, applyGaps;
     private CheckBox checkbox;
     private ListBox listbox;
+    private ComboBox combobox1, combobox2;
     private TextBox textbox;
 
     /*** Generic Steps used by all Testcases*/
@@ -79,4 +81,35 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
 
     }
 
+
+    /*** Start your testcase with the JComboBox*/
+    @When("^I should check JComboBox \"([^\"]*)\" and \"([^\"]*)\" to be visible on the page$")
+    public void i_check_the_jcombobox(String hgapName, String vgapName) throws Throwable {
+        // Verify Horizontal Gap
+        combobox1 = window.getComboBox(hgapName);// Retrieve
+        assertEquals(true, combobox1.isVisible());// Verify Horizontal is visible
+
+        // Verify Vertical Gap
+        combobox2 = window.getComboBox(vgapName);// Retrieve
+        assertEquals(true, combobox2.isVisible());// Verify Vertical is visible
+        checkIfTextboxIsVisible();
+    }
+
+    @Then("^I click \"([^\"]*)\" for the \"([^\"]*)\" combobox")
+    public void i_click_the_jcomboboxitem(String itemName, String comboboxName) throws Throwable {
+        if(comboboxName.contentEquals("horGap")) {
+//            combobox1.select(itemName);
+            combobox1.select(itemName);
+            System.out.println("Selected Index: " +combobox1.getAwtComponent().getSelectedItem().toString());
+        }else {
+            combobox2.select(itemName);
+            System.out.println("Selected Index: " +combobox2.getAwtComponent().getSelectedItem().toString());
+        }
+
+    }
+    @And("^I click the \"([^\"]*)\" button$")
+    public void i_click_the_applygaps_button(String buttonName) throws Throwable {
+        applyGaps = window.getButton(buttonName);
+        Mouse.click(applyGaps);
+    }
 }
