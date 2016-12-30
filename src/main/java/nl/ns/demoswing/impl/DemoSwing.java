@@ -13,16 +13,16 @@ public class DemoSwing extends JFrame {
     private final static int maxGap = 20;
 
     private static ArrayList<String> itemList = new ArrayList<String>();
-    private static int jListItemCount = 0;
     private GridLayout gridLayout1 = new GridLayout(0,2);
     private GridLayout gridLayout2 = new GridLayout(0,3);
-    private GridLayout gridLayout3 = new GridLayout(2,2);
-
+    private GridLayout gridLayout3 = new GridLayout(3,2);
+    private GridLayout gridLayout4 = new GridLayout(0,2);
     private JFrame jFrame = new JFrame("GridLayout Demo Swing Application");
 
     private JPanel jPanel1 = new JPanel(); // For the JLabel, JTextfields, JButtons
     private JPanel jPanel2 = new JPanel(); // for the JComboxbox apply gaps
-    private JPanel jPanel3 = new JPanel(); // For JCheckbox and JList
+    private JPanel jPanel3 = new JPanel(); // For JCheckbox
+    private JPanel jPanel4 = new JPanel(); // For JList
 
     private JComboBox horGapComboBox;
     private JComboBox verGapComboBox;
@@ -51,13 +51,9 @@ public class DemoSwing extends JFrame {
     private JCheckBox checkbox2 = new JCheckBox("Checkbox2");
     private JCheckBox checkbox3 = new JCheckBox("Checkbox3");
 
-    DefaultListModel lm1 = new DefaultListModel();
-    DefaultListModel lm2 = new DefaultListModel();
-    DefaultListModel lm3 = new DefaultListModel();
+    DefaultListModel lm = new DefaultListModel();
+    private JList list = new JList(lm);
 
-    private JList list1 = new JList(lm1);
-    private JList list2 = new JList(lm2);
-    private JList list3 = new JList(lm3);
 
     private DemoSwing(String name) {
         super(name);
@@ -82,7 +78,7 @@ public class DemoSwing extends JFrame {
 
     }
 
-    private ListSelectionListener listListener() {
+    public ListSelectionListener listListener() {
         ListSelectionListener lsl = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
@@ -99,7 +95,7 @@ public class DemoSwing extends JFrame {
                             System.out.print("  Selections: ");
                         }
                         field1.setText("");
-                        field1.setText("You have Selected: " + selectionValues[i]);
+                        field1.setText("You have selected " + selectionValues[i]);
                         System.out.print(selections[i] + "/" + selectionValues[i] + " ");
                     }
                     System.out.println();
@@ -147,20 +143,20 @@ public class DemoSwing extends JFrame {
     }
 
     private void addSomeElementsToList(DefaultListModel lm) {
-        if(itemList.size() <= 8) {
-            for (int i = 1; i <= 3; i++) {
-                itemList.add("Item " + jListItemCount);
-                lm.addElement(itemList.get(jListItemCount));
-                jListItemCount++;
+
+            for (int i = 0; i <= 8; i++) {
+                itemList.add("Item " + i);
+                lm.addElement(itemList.get(i));
             }
         }
-    }
+
 
     private void addComponentsToPane(final Container pane) {
         initGaps();
         jPanel1.setLayout(gridLayout1);
         jPanel2.setLayout(gridLayout2);
         jPanel3.setLayout(gridLayout3);
+        jPanel4.setLayout(gridLayout4);
 
         //Set up components preferred size
         Dimension buttonSize = fakeButton.getPreferredSize();
@@ -203,20 +199,13 @@ public class DemoSwing extends JFrame {
         jPanel3.add(label3Checkbox);
         jPanel3.add(checkbox3);
 
-        addSomeElementsToList(lm1);
-        addSomeElementsToList(lm2);
-        addSomeElementsToList(lm3);
-        list1.setName("List1");
-        list2.setName("List2");
-        list3.setName("List3");
-        jPanel3.add(list1);
-        jPanel3.add(list2);
-        jPanel3.add(list3);
+        addSomeElementsToList(lm);
+        list.setName("List");
+        jPanel4.add(list);
+
 
         // Add the Lists to some listeners
-        list1.addListSelectionListener(listListener());
-        list2.addListSelectionListener(listListener());
-        list3.addListSelectionListener(listListener());
+        list.addListSelectionListener(listListener());
 
         applyGapsListener(applyButton); // Do some action with Apply Gaps button
 
@@ -232,8 +221,9 @@ public class DemoSwing extends JFrame {
 
         pane.add(jPanel1, BorderLayout.NORTH);
 //        pane.add(new JSeparator(), BorderLayout.CENTER);
-        pane.add(jPanel2, BorderLayout.CENTER);
-        pane.add(jPanel3, BorderLayout.SOUTH);
+        pane.add(jPanel2, BorderLayout.SOUTH);
+        pane.add(jPanel3, BorderLayout.CENTER);
+        pane.add(jPanel4, BorderLayout.EAST);
 
         setPreferredSize(new Dimension(800,600));
         System.out.println("ArrayList itemSize: " + itemList.size());

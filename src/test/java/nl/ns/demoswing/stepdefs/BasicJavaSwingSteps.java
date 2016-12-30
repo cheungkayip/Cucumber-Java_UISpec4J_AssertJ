@@ -63,17 +63,19 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     }
 
     /*** Start your testcase with the JList*/
-    @When("^I should check JList1 if it is visible \"([^\"]*)\"$")
+    @When("^I should check JList if it is visible \"([^\"]*)\"$")
     public void i_check_the_jlist(String jlistText) throws Throwable {
         // 2. Verify Checkbox begin state
         listbox = window.getListBox(jlistText);// Retrieve JList
         assertEquals(true, listbox.isVisible());// Verify JCheckbox is visible
+
         checkIfTextboxIsVisible();
     }
 
-    @Then("^I click the listitem (\\d+)$")
-    public void i_click_the_listitem(int itemClicked) throws Throwable {
-        window.getListBox("list1").click(itemClicked);
+    @Then("^I click the \"([^\"]*)\"$")
+    public void i_click_the_listitem(String itemName) throws Throwable {
+        System.out.println("Listbox Name: " + listbox.getName());
+        listbox.select(itemName);
 
     }
 
