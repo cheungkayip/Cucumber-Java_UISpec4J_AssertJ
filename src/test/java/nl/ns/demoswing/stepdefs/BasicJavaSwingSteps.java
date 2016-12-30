@@ -13,6 +13,7 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     private Window window;
     private Button button, applyGaps;
     private CheckBox checkbox;
+    private RadioButton radiobutton;
     private ListBox listbox;
     private ComboBox combobox1, combobox2;
     private TextBox textbox;
@@ -111,5 +112,18 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     public void i_click_the_applygaps_button(String buttonName) throws Throwable {
         applyGaps = window.getButton(buttonName);
         Mouse.click(applyGaps);
+    }
+
+    /*** Start your testcase with the JRadioButtons*/
+    @When("^I should check for RadioButton if they are there \"([^\"]*)\"$")
+    public void i_select_the_radiobutton(String radiobuttonText) throws Throwable {
+        radiobutton = window.getRadioButton(radiobuttonText);
+        assertEquals(true, radiobutton.isVisible());
+        checkIfTextboxIsVisible();
+    }
+
+    @Then("^I click the radiobutton")
+    public void i_click_the_radiobutton() throws Throwable {
+        Mouse.click(radiobutton);// Click the button
     }
 }

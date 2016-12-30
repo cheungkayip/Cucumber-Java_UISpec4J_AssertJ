@@ -15,7 +15,7 @@ public class DemoSwing extends JFrame {
     private static ArrayList<String> itemList = new ArrayList<String>();
     private GridLayout gridLayout1 = new GridLayout(0,2);
     private GridLayout gridLayout2 = new GridLayout(0,3);
-    private GridLayout gridLayout3 = new GridLayout(4,2);
+    private GridLayout gridLayout3 = new GridLayout(8,2);
     private GridLayout gridLayout4 = new GridLayout(0,2);
     private JFrame jFrame = new JFrame("GridLayout Demo Swing Application");
 
@@ -36,6 +36,9 @@ public class DemoSwing extends JFrame {
     private JLabel label1Checkbox = new JLabel("Checkbox 1: ");
     private JLabel label2Checkbox = new JLabel("Checkbox 2: ");
     private JLabel label3Checkbox = new JLabel("Checkbox 3: ");
+    private JLabel label1RadioButton = new JLabel("RadioButton 1: ");
+    private JLabel label2RadioButton = new JLabel("RadioButton 2: ");
+    private JLabel label3RadioButton = new JLabel("RadioButton 3: ");
 
     private JButton button1 = new JButton("Button1");
     private JButton button2 = new JButton("Button2");
@@ -50,6 +53,10 @@ public class DemoSwing extends JFrame {
     private JCheckBox checkbox1 = new JCheckBox("Checkbox1");
     private JCheckBox checkbox2 = new JCheckBox("Checkbox2");
     private JCheckBox checkbox3 = new JCheckBox("Checkbox3");
+
+    private JRadioButton radiobutton1 = new JRadioButton("RadioButton1");
+    private JRadioButton radiobutton2 = new JRadioButton("RadioButton2");
+    private JRadioButton radiobutton3 = new JRadioButton("RadioButton3");
 
     DefaultListModel lm = new DefaultListModel();
     private JList list = new JList(lm);
@@ -112,6 +119,24 @@ public class DemoSwing extends JFrame {
                 }else{
                     field1.setText("");
                     field1.setText(checkboxUnselectedText);
+                }
+
+            }
+        });
+    }
+
+    private void radioButtonListener(final JRadioButton radiobutton) {
+        final String radioSelectedText = "You have selected " + radiobutton.getText();
+        final String radioUnselectedText = "You have Unselected " + radiobutton.getText();
+        radiobutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radiobutton.isSelected()){
+                    field1.setText("");
+                    field1.setText(radioSelectedText);
+                }else{
+                    field1.setText("");
+                    field1.setText(radioUnselectedText);
                 }
 
             }
@@ -189,6 +214,13 @@ public class DemoSwing extends JFrame {
         jPanel3.add(label3Checkbox);
         jPanel3.add(checkbox3);
 
+        jPanel3.add(label1RadioButton);
+        jPanel3.add(radiobutton1);
+        jPanel3.add(label2RadioButton);
+        jPanel3.add(radiobutton2);
+        jPanel3.add(label3RadioButton);
+        jPanel3.add(radiobutton3);
+
         addSomeElementsToList(lm);
         list.setName("List");
         jPanel4.add(list);
@@ -208,6 +240,10 @@ public class DemoSwing extends JFrame {
         checkboxListener(checkbox1); // Add the checkbox Listeners to the Application
         checkboxListener(checkbox2);
         checkboxListener(checkbox3);
+
+        radioButtonListener(radiobutton1);
+        radioButtonListener(radiobutton2);
+        radioButtonListener(radiobutton3);
 
         pane.add(jPanel1, BorderLayout.NORTH);
 //        pane.add(new JSeparator(), BorderLayout.CENTER);
