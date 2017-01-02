@@ -8,6 +8,8 @@ import nl.ns.demoswing.impl.DemoSwing;
 import org.uispec4j.*;
 import org.uispec4j.interception.MainClassAdapter;
 
+import javax.swing.*;
+
 public class BasicJavaSwingSteps extends UISpecTestCase {
 
     private Window window;
@@ -17,6 +19,7 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     private ListBox listbox;
     private ComboBox combobox1, combobox2;
     private TextBox textbox;
+    private Table table;
 
     /*** Generic Steps used by all Testcases*/
     @Given("^I should start the java swing gui")
@@ -125,5 +128,20 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     @Then("^I click the radiobutton")
     public void i_click_the_radiobutton() throws Throwable {
         Mouse.click(radiobutton);// Click the button
+    }
+
+    /*** Start your testcase with the JTables*/
+    @When("^I should check if JTable \"([^\"]*)\" is available$")
+    public void i_check_if_jtable_is_available(String jTableText) throws Throwable {
+        table = window.getTable(jTableText);
+        assertEquals(true, table.isVisible());
+        checkIfTextboxIsVisible();
+    }
+
+    @Then("^I click the Row \"([^\"]*)\" and Column \"([^\"]*)\"$")
+    public void i_click_the_item_in_table(int row, int column) throws Throwable {
+        System.out.println("Row: " + row);
+        System.out.println("Column: " + column);
+        table.click(row, column);
     }
 }

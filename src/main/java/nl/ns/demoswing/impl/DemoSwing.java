@@ -3,6 +3,8 @@ package nl.ns.demoswing.impl;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +25,8 @@ public class DemoSwing extends JFrame {
     private JPanel jPanel2 = new JPanel(); // for the JComboxbox apply gaps
     private JPanel jPanel3 = new JPanel(); // For JCheckbox
     private JPanel jPanel4 = new JPanel(); // For JList
+
+    private JTable jTable;
 
     private JComboBox horGapComboBox;
     private JComboBox verGapComboBox;
@@ -85,6 +89,30 @@ public class DemoSwing extends JFrame {
             }
         });
 
+    }
+
+    public JTable tableListener() {
+        jTable.setCellSelectionEnabled(true);
+        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
+        cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                String selectedData = null;
+                int[] selectedRow = jTable.getSelectedRows();
+                int[] selectedColumns = jTable.getSelectedColumns();
+                for (int i = 0; i < selectedRow.length; i++) {
+                    for (int j = 0; j < selectedColumns.length; j++) {
+                        selectedData = (String) jTable.getValueAt(selectedRow[i], selectedColumns[j]);
+                    }
+                }
+                field1.setText("");
+                field1.setText("You have selected " + selectedData);
+
+            }
+        });
+        return jTable;
     }
 
     public ListSelectionListener listListener() {
@@ -171,6 +199,31 @@ public class DemoSwing extends JFrame {
             }
         }
 
+    private JScrollPane addSomeElementsToTheTable() {
+        Object columnNames[] = { "Column One", "Column Two", "Column Three" };
+
+        DefaultTableModel model = new DefaultTableModel(columnNames,3);
+        jTable = new JTable(model);
+        jTable.setName("Table Example");
+//        JTableHeader header = new JTableHeader();
+//        header.setName("Table Example");
+//        jTable.setTableHeader(header);
+
+        jTable.setValueAt("Row1-Column1",0,0);
+        jTable.setValueAt("Row1-Column2",0,1);
+        jTable.setValueAt("Row1-Column3",0,2);
+
+        jTable.setValueAt("Row2-Column1",1,0);
+        jTable.setValueAt("Row2-Column2",1,1);
+        jTable.setValueAt("Row2-Column3",1,2);
+
+        jTable.setValueAt("Row3-Column1",2,0);
+        jTable.setValueAt("Row3-Column2",2,1);
+        jTable.setValueAt("Row3-Column3",2,2);
+
+        return new JScrollPane(jTable);
+    }
+
     private void addComponentsToPane(final Container pane) {
         initGaps();
         jPanel1.setLayout(gridLayout1);
@@ -221,13 +274,15 @@ public class DemoSwing extends JFrame {
         jPanel3.add(label3RadioButton);
         jPanel3.add(radiobutton3);
 
+
+        jPanel3.add(addSomeElementsToTheTable());
+        tableListener();
+
         addSomeElementsToList(lm);
         list.setName("List");
         jPanel4.add(list);
 
-
-        // Add the Lists to some listeners
-        list.addListSelectionListener(listListener());
+        list.addListSelectionListener(listListener());// Add the Lists to some listeners
 
         applyGapsListener(applyButton); // Do some action with Apply Gaps button
 
@@ -246,13 +301,11 @@ public class DemoSwing extends JFrame {
         radioButtonListener(radiobutton3);
 
         pane.add(jPanel1, BorderLayout.NORTH);
-//        pane.add(new JSeparator(), BorderLayout.CENTER);
         pane.add(jPanel2, BorderLayout.SOUTH);
         pane.add(jPanel3, BorderLayout.CENTER);
         pane.add(jPanel4, BorderLayout.EAST);
 
-        setPreferredSize(new Dimension(800,600));
-        System.out.println("ArrayList itemSize: " + itemList.size());
+        setPreferredSize(new Dimension(1024,768));
     }
 
     /**
