@@ -3,12 +3,15 @@ package nl.ns.demoswing.impl;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class DemoSwing extends JFrame {
     private static final String gapList[] = {"0", "10", "15", "20"};
@@ -17,7 +20,7 @@ public class DemoSwing extends JFrame {
     private static ArrayList<String> itemList = new ArrayList<String>();
     private GridLayout gridLayout1 = new GridLayout(0,2);
     private GridLayout gridLayout2 = new GridLayout(0,3);
-    private GridLayout gridLayout3 = new GridLayout(8,2);
+    private GridLayout gridLayout3 = new GridLayout(9,2);
     private GridLayout gridLayout4 = new GridLayout(0,2);
     private JFrame jFrame = new JFrame("GridLayout Demo Swing Application");
 
@@ -62,8 +65,13 @@ public class DemoSwing extends JFrame {
     private JRadioButton radiobutton2 = new JRadioButton("RadioButton2");
     private JRadioButton radiobutton3 = new JRadioButton("RadioButton3");
 
-    DefaultListModel lm = new DefaultListModel();
+    private DefaultListModel lm = new DefaultListModel();
     private JList list = new JList(lm);
+
+    private JTree jtree1;
+    private JTree jtree2;
+    private JScrollPane pane1;
+    private JScrollPane pane2;
 
 
     private DemoSwing(String name) {
@@ -78,6 +86,26 @@ public class DemoSwing extends JFrame {
         verGapComboBox.setName("verGap");
     }
 
+    private void fillTheJTree() {
+        Vector<String> vector1 = new Vector<String>();
+        vector1.add("V1 One");
+        vector1.add("V1 Two");
+        vector1.add("V1 Three");
+        jtree1 = new JTree(vector1);
+        jtree1.setRootVisible(true);
+        jtree1.setName("JTree1");
+        pane1 = new JScrollPane(jtree1);
+
+        Vector<String> vector2 = new Vector<String>();
+        vector2.add("V2 One");
+        vector2.add("V2 Two");
+        vector2.add("V2 Three");
+        jtree2 = new JTree(vector2);
+        jtree2.setRootVisible(true);
+        jtree2.setName("JTree2");
+        pane2 = new JScrollPane(jtree2);
+    }
+
     private void createButtonListener(JButton buttonObject) {
         final String someText = "You have clicked " + buttonObject.getText();
 
@@ -89,6 +117,20 @@ public class DemoSwing extends JFrame {
             }
         });
 
+    }
+
+    public void treeListener(final JTree tree) {
+       tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                Object nodeInfo = node.getUserObject();
+                String data = nodeInfo.toString();
+                field1.setText("");
+                field1.setText("You have selected " + data);
+                System.out.println("Data: " + data);
+            }
+        });
     }
 
     public JTable tableListener() {
@@ -274,9 +316,15 @@ public class DemoSwing extends JFrame {
         jPanel3.add(label3RadioButton);
         jPanel3.add(radiobutton3);
 
-
         jPanel3.add(addSomeElementsToTheTable());
         tableListener();
+
+        // JTree
+        fillTheJTree();
+        jPanel3.add(pane1);
+        jPanel3.add(pane2);
+        treeListener(jtree1);
+        treeListener(jtree2);
 
         addSomeElementsToList(lm);
         list.setName("List");

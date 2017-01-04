@@ -10,7 +10,8 @@ import org.junit.runner.RunWith;
                 "@Comboboxes, " +
                 "@Lists, " +
                 "@Radiobuttons, " +
-                "@Tables"
+                "@Tables, " +
+                "@JTree"
         },
         glue = {"nl.ns.demoswing.stepdefs"})
 public class CucumberRunner {

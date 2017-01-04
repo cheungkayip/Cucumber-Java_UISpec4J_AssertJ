@@ -8,8 +8,6 @@ import nl.ns.demoswing.impl.DemoSwing;
 import org.uispec4j.*;
 import org.uispec4j.interception.MainClassAdapter;
 
-import javax.swing.*;
-
 public class BasicJavaSwingSteps extends UISpecTestCase {
 
     private Window window;
@@ -20,6 +18,7 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     private ComboBox combobox1, combobox2;
     private TextBox textbox;
     private Table table;
+    private Tree tree;
 
     /*** Generic Steps used by all Testcases*/
     @Given("^I should start the java swing gui")
@@ -28,7 +27,7 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
         window = getMainWindow();// Retrieve the components
     }
 
-    private void checkIfTextboxIsVisible() {
+    public void checkIfTextboxIsVisible() {
         // 3. Verify JTextField begin state
         textbox = window.getTextBox("Result"); // Retrieve JTextField
         assertEquals(true, textbox.isVisible()); // Verify JTextField is visible
@@ -43,10 +42,10 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     /*** Start your testcase with the buttons*/
     @When("^I should check for buttons and textfield visibility \"([^\"]*)\"$")
     public void i_check_if_the_buttons_are_visible(String buttonText) throws Throwable {
-            // 2. Verify Button begin state
-            button = window.getButton(buttonText);// Retrieve JButton
-            assertEquals(true, button.isVisible());// Verify Button is visible
-            checkIfTextboxIsVisible();
+        // 2. Verify Button begin state
+        button = window.getButton(buttonText);// Retrieve JButton
+        assertEquals(true, button.isVisible());// Verify Button is visible
+        checkIfTextboxIsVisible();
 
     }
 
@@ -101,16 +100,17 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
 
     @Then("^I click \"([^\"]*)\" for the \"([^\"]*)\" combobox")
     public void i_click_the_jcomboboxitem(String itemName, String comboboxName) throws Throwable {
-        if(comboboxName.contentEquals("horGap")) {
+        if (comboboxName.contentEquals("horGap")) {
 //            combobox1.select(itemName);
             combobox1.select(itemName);
-            System.out.println("Selected Index: " +combobox1.getAwtComponent().getSelectedItem().toString());
-        }else {
+            System.out.println("Selected Index: " + combobox1.getAwtComponent().getSelectedItem().toString());
+        } else {
             combobox2.select(itemName);
-            System.out.println("Selected Index: " +combobox2.getAwtComponent().getSelectedItem().toString());
+            System.out.println("Selected Index: " + combobox2.getAwtComponent().getSelectedItem().toString());
         }
 
     }
+
     @And("^I click the \"([^\"]*)\" button$")
     public void i_click_the_applygaps_button(String buttonName) throws Throwable {
         applyGaps = window.getButton(buttonName);
@@ -143,5 +143,19 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
         System.out.println("Row: " + row);
         System.out.println("Column: " + column);
         table.click(row, column);
+    }
+
+    /*** Start your testcase with the Jtree*/
+    @When("^I should check if the Jtree \"([^\"]*)\" is available$")
+    public void i_check_if_jtree_is_available(String jtreeName) throws Throwable {
+        tree = window.getTree(jtreeName);
+        assertEquals(true, tree.isVisible());
+
+        checkIfTextboxIsVisible();
+    }
+
+    @Then("^I click the Row \"([^\"]*)\" in the JTree$")
+    public void i_click_the_item_in_table(String itemName) throws Throwable {
+        tree.click(itemName);
     }
 }
