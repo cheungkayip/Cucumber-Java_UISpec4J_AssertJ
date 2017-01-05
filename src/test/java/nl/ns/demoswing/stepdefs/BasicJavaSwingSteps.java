@@ -12,6 +12,7 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
 
     private Window window;
     private Button button, applyGaps;
+    private AbstractButton abstractButton;
     private CheckBox checkbox;
     private RadioButton radiobutton;
     private ListBox listbox;
@@ -19,6 +20,7 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     private TextBox textbox;
     private Table table;
     private Tree tree;
+    DemoSwing ds = new DemoSwing("Demo Swing Application");
 
     /*** Generic Steps used by all Testcases*/
     @Given("^I should start the java swing gui")
@@ -157,5 +159,26 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     @Then("^I click the Row \"([^\"]*)\" in the JTree$")
     public void i_click_the_item_in_table(String itemName) throws Throwable {
         tree.click(itemName);
+    }
+
+    /*** Start your testcase with the AbstractButton*/
+    @Then("^I should check if the AbstractButton label has the text \"([^\"]*)\"$")
+    public void check_if_the_abstractbutton_is_visible(String buttonBeginStateLabel) throws Throwable {
+        abstractButton = window.getButton("AbstractButton");
+        assertEquals(true, abstractButton.isEnabled());
+        assertEquals(true, abstractButton.isVisible());
+        String s = ds.setTheAbstractButtonLabel(abstractButton.getLabel());
+        assertEquals(buttonBeginStateLabel, s);
+    }
+
+    @Then("^I click the AbstractButton$")
+    public void i_click_the_abstractbutton() throws Throwable {
+        abstractButton.click();
+    }
+
+    @And("^I should see the AbstractButton label changed to \"([^\"]*)\"$")
+    public void i_should_check_if_abstractLabel_has_changed(String labelName) throws Throwable {
+        String s = ds.setTheAbstractButtonLabel(abstractButton.getLabel());
+        assertEquals(labelName,s);
     }
 }

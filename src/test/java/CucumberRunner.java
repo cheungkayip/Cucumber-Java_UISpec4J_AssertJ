@@ -11,7 +11,8 @@ import org.junit.runner.RunWith;
                 "@Lists, " +
                 "@Radiobuttons, " +
                 "@Tables, " +
-                "@JTree"
+                "@JTree, " +
+                "@AbstractButton"
         },
         glue = {"nl.ns.demoswing.stepdefs"})
 public class CucumberRunner {

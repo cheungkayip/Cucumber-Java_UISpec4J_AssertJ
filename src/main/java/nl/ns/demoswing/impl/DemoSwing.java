@@ -1,5 +1,8 @@
 package nl.ns.demoswing.impl;
 
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -10,19 +13,20 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
 public class DemoSwing extends JFrame {
     private static final String gapList[] = {"0", "10", "15", "20"};
     private final static int maxGap = 20;
+    private static int abstractCounter = 0;
 
     private static ArrayList<String> itemList = new ArrayList<String>();
     private GridLayout gridLayout1 = new GridLayout(0,2);
     private GridLayout gridLayout2 = new GridLayout(0,3);
     private GridLayout gridLayout3 = new GridLayout(9,2);
     private GridLayout gridLayout4 = new GridLayout(0,2);
-    private JFrame jFrame = new JFrame("GridLayout Demo Swing Application");
 
     private JPanel jPanel1 = new JPanel(); // For the JLabel, JTextfields, JButtons
     private JPanel jPanel2 = new JPanel(); // for the JComboxbox apply gaps
@@ -55,7 +59,7 @@ public class DemoSwing extends JFrame {
     private JButton applyButton = new JButton("Apply gaps");
     private JButton fakeButton = new JButton("Just fake button");
 
-    private JTextField field1 = new JTextField("Result");
+    public JTextField field1 = new JTextField("Result");
 
     private JCheckBox checkbox1 = new JCheckBox("Checkbox1");
     private JCheckBox checkbox2 = new JCheckBox("Checkbox2");
@@ -73,8 +77,9 @@ public class DemoSwing extends JFrame {
     private JScrollPane pane1;
     private JScrollPane pane2;
 
+    private AbstractButton abstractButton = new JButton("AbstractButton");
 
-    private DemoSwing(String name) {
+    public DemoSwing(String name) {
         super(name);
         setResizable(false);
     }
@@ -84,6 +89,151 @@ public class DemoSwing extends JFrame {
         verGapComboBox = new JComboBox(gapList);
         horGapComboBox.setName("horGap");
         verGapComboBox.setName("verGap");
+    }
+
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        /* Use an appropriate Look and Feel */
+        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+        /* Turn off metal's use of bold fonts */
+        UIManager.put("swing.boldMetal", Boolean.FALSE);
+
+        //Schedule a job for the event dispatch thread:
+        //creating and showing this application's GUI.
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    createAndShowGUI();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    private void addComponentsToPane(final Container pane) throws IOException {
+        initGaps();
+        jPanel1.setLayout(gridLayout1);
+        jPanel2.setLayout(gridLayout2);
+        jPanel3.setLayout(gridLayout3);
+        jPanel4.setLayout(gridLayout4);
+
+        //Set up components preferred size
+        Dimension buttonSize = fakeButton.getPreferredSize();
+        jPanel1.setPreferredSize(new Dimension((int)(buttonSize.getWidth() * 2.5)+maxGap,
+                (int)(buttonSize.getHeight() * 3.5)+maxGap * 2));
+
+        //Add labels + buttons to experiment with Grid Layout
+        jPanel1.add(label1Button);
+        jPanel1.add(label2Button);
+        jPanel1.add(label3Button);
+        jPanel1.add(label4Button);
+        jPanel1.add(label5Button);
+
+        jPanel1.add(button1);
+        jPanel1.add(button2);
+        jPanel1.add(button3);
+        jPanel1.add(button4);
+        jPanel1.add(button5);
+
+        jPanel3.add(resultLabel);
+        jPanel3.add(field1);
+
+        //Add controls to set up horizontal and vertical gaps
+        jPanel2.add(new Label("Horizontal gap:"));
+        jPanel2.add(new Label("Vertical gap:"));
+        jPanel2.add(new Label(" "));
+        jPanel2.add(horGapComboBox);
+        jPanel2.add(verGapComboBox);
+        jPanel2.add(applyButton);
+
+        jPanel3.add(label1Checkbox);
+        jPanel3.add(checkbox1);
+        jPanel3.add(label2Checkbox);
+        jPanel3.add(checkbox2);
+        jPanel3.add(label3Checkbox);
+        jPanel3.add(checkbox3);
+
+        jPanel3.add(label1RadioButton);
+        jPanel3.add(radiobutton1);
+        jPanel3.add(label2RadioButton);
+        jPanel3.add(radiobutton2);
+        jPanel3.add(label3RadioButton);
+        jPanel3.add(radiobutton3);
+
+        jPanel3.add(addSomeElementsToTheTable());
+        tableListener();
+
+        // JTree
+        fillTheJTree();
+        jPanel3.add(pane1);
+        jPanel3.add(pane2);
+        treeListener(jtree1);
+        treeListener(jtree2);
+
+        abstractButton.setName("AbstractButton");
+        // When you start the application firstly set the Abstract Button Label
+        setTheAbstractButtonLabel("<html>Abstract Button<br><font face='courier new'"
+                + " color=red>(You Have to click me!)</font></html>");
+        jPanel3.add(abstractButton);
+        createAbstractButtonListener(); // Listen to the button in order to decide which message will be displayed
+
+        addSomeElementsToList(lm);
+        list.setName("List");
+        jPanel4.add(list);
+
+        list.addListSelectionListener(listListener());// Add the Lists to some listeners
+
+        applyGapsListener(applyButton); // Do some action with Apply Gaps button
+
+        createButtonListener(button1); // Add the Button Listeners to the application
+        createButtonListener(button2);
+        createButtonListener(button3);
+        createButtonListener(button4);
+        createButtonListener(button5);
+
+        checkboxListener(checkbox1); // Add the checkbox Listeners to the Application
+        checkboxListener(checkbox2);
+        checkboxListener(checkbox3);
+
+        radioButtonListener(radiobutton1);
+        radioButtonListener(radiobutton2);
+        radioButtonListener(radiobutton3);
+
+        pane.add(jPanel1, BorderLayout.NORTH);
+        pane.add(jPanel2, BorderLayout.SOUTH);
+        pane.add(jPanel3, BorderLayout.CENTER);
+        pane.add(jPanel4, BorderLayout.EAST);
+
+        setPreferredSize(new Dimension(1024,768));
+    }
+
+    /**
+     * Create the GUI and show it.  For thread safety,
+     * this method is invoked from the
+     * event dispatch thread.
+     */
+    private static void createAndShowGUI() throws IOException {
+        //Create and set up the window.
+        DemoSwing frame = new DemoSwing("Demo Swing Application");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //Set up the content pane.
+        frame.addComponentsToPane(frame.getContentPane());
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public String setTheAbstractButtonLabel(String s) throws IOException {
+        // Set the buttonText with the new HTML content
+        abstractButton.setText(s);
+        org.jsoup.nodes.Document doc = Jsoup.parse(s);
+        Elements fontAttribute = doc.select("font");
+        String fa = fontAttribute.text();
+        System.out.println(" fontAttribute: " + fa);
+        // Return a nicely formed value text instead of HTML content
+        return fa;
     }
 
     private void fillTheJTree() {
@@ -106,6 +256,31 @@ public class DemoSwing extends JFrame {
         pane2 = new JScrollPane(jtree2);
     }
 
+
+    private void createAbstractButtonListener() {
+        abstractButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(actionEvent.getID() == ActionEvent.ACTION_FIRST && abstractCounter == 0) {
+                    try {
+                        setTheAbstractButtonLabel("<html>Abstract Button<br><font face='courier new'"
+                                + " color=red>(Good Job! You have clicked me the first time!)</font></html>");
+                        abstractCounter++;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        setTheAbstractButtonLabel("<html>Abstract Button<br><font face='courier new'"
+                                + " color=red>(What!? You have clicked me again??)</font></html>");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
     private void createButtonListener(JButton buttonObject) {
         final String someText = "You have clicked " + buttonObject.getText();
 
@@ -119,8 +294,8 @@ public class DemoSwing extends JFrame {
 
     }
 
-    public void treeListener(final JTree tree) {
-       tree.addTreeSelectionListener(new TreeSelectionListener() {
+    private void treeListener(final JTree tree) {
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
@@ -133,7 +308,7 @@ public class DemoSwing extends JFrame {
         });
     }
 
-    public JTable tableListener() {
+    private JTable tableListener() {
         jTable.setCellSelectionEnabled(true);
         ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
         cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -144,9 +319,9 @@ public class DemoSwing extends JFrame {
                 String selectedData = null;
                 int[] selectedRow = jTable.getSelectedRows();
                 int[] selectedColumns = jTable.getSelectedColumns();
-                for (int i = 0; i < selectedRow.length; i++) {
-                    for (int j = 0; j < selectedColumns.length; j++) {
-                        selectedData = (String) jTable.getValueAt(selectedRow[i], selectedColumns[j]);
+                for (int aSelectedRow : selectedRow) {
+                    for (int selectedColumn : selectedColumns) {
+                        selectedData = (String) jTable.getValueAt(aSelectedRow, selectedColumn);
                     }
                 }
                 field1.setText("");
@@ -157,15 +332,15 @@ public class DemoSwing extends JFrame {
         return jTable;
     }
 
-    public ListSelectionListener listListener() {
-        ListSelectionListener lsl = new ListSelectionListener() {
+    private ListSelectionListener listListener() {
+        return new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
                 boolean adjust = listSelectionEvent.getValueIsAdjusting();
                 if (!adjust) {
-                    JList list = (JList) listSelectionEvent.getSource();
-                    int selections[] = list.getSelectedIndices();
-                    Object selectionValues[] = list.getSelectedValues();
+                    JList list1 = (JList) listSelectionEvent.getSource();
+                    int selections[] = list1.getSelectedIndices();
+                    Object selectionValues[] = list1.getSelectedValues();
                     for (int i = 0, n = selections.length; i < n; i++) {
                         field1.setText("");
                         field1.setText("You have selected " + selectionValues[i]);
@@ -174,7 +349,6 @@ public class DemoSwing extends JFrame {
                 }
             }
         };
-        return lsl;
     }
 
     private void checkboxListener(final JCheckBox checkbox) {
@@ -235,11 +409,11 @@ public class DemoSwing extends JFrame {
     }
 
     private void addSomeElementsToList(DefaultListModel lm) {
-            for (int i = 0; i <= 8; i++) {
-                itemList.add("Item " + i);
-                lm.addElement(itemList.get(i));
-            }
+        for (int i = 0; i <= 8; i++) {
+            itemList.add("Item " + i);
+            lm.addElement(itemList.get(i));
         }
+    }
 
     private JScrollPane addSomeElementsToTheTable() {
         Object columnNames[] = { "Column One", "Column Two", "Column Three" };
@@ -247,9 +421,6 @@ public class DemoSwing extends JFrame {
         DefaultTableModel model = new DefaultTableModel(columnNames,3);
         jTable = new JTable(model);
         jTable.setName("Table Example");
-//        JTableHeader header = new JTableHeader();
-//        header.setName("Table Example");
-//        jTable.setTableHeader(header);
 
         jTable.setValueAt("Row1-Column1",0,0);
         jTable.setValueAt("Row1-Column2",0,1);
@@ -266,126 +437,5 @@ public class DemoSwing extends JFrame {
         return new JScrollPane(jTable);
     }
 
-    private void addComponentsToPane(final Container pane) {
-        initGaps();
-        jPanel1.setLayout(gridLayout1);
-        jPanel2.setLayout(gridLayout2);
-        jPanel3.setLayout(gridLayout3);
-        jPanel4.setLayout(gridLayout4);
 
-        //Set up components preferred size
-        Dimension buttonSize = fakeButton.getPreferredSize();
-        jPanel1.setPreferredSize(new Dimension((int)(buttonSize.getWidth() * 2.5)+maxGap,
-                (int)(buttonSize.getHeight() * 3.5)+maxGap * 2));
-
-        //Add labels + buttons to experiment with Grid Layout
-        jPanel1.add(label1Button);
-        jPanel1.add(label2Button);
-        jPanel1.add(label3Button);
-        jPanel1.add(label4Button);
-        jPanel1.add(label5Button);
-
-        jPanel1.add(button1);
-        jPanel1.add(button2);
-        jPanel1.add(button3);
-        jPanel1.add(button4);
-        jPanel1.add(button5);
-
-        jPanel3.add(resultLabel);
-        jPanel3.add(field1);
-
-        //Add controls to set up horizontal and vertical gaps
-        jPanel2.add(new Label("Horizontal gap:"));
-        jPanel2.add(new Label("Vertical gap:"));
-        jPanel2.add(new Label(" "));
-        jPanel2.add(horGapComboBox);
-        jPanel2.add(verGapComboBox);
-        jPanel2.add(applyButton);
-
-        jPanel3.add(label1Checkbox);
-        jPanel3.add(checkbox1);
-        jPanel3.add(label2Checkbox);
-        jPanel3.add(checkbox2);
-        jPanel3.add(label3Checkbox);
-        jPanel3.add(checkbox3);
-
-        jPanel3.add(label1RadioButton);
-        jPanel3.add(radiobutton1);
-        jPanel3.add(label2RadioButton);
-        jPanel3.add(radiobutton2);
-        jPanel3.add(label3RadioButton);
-        jPanel3.add(radiobutton3);
-
-        jPanel3.add(addSomeElementsToTheTable());
-        tableListener();
-
-        // JTree
-        fillTheJTree();
-        jPanel3.add(pane1);
-        jPanel3.add(pane2);
-        treeListener(jtree1);
-        treeListener(jtree2);
-
-        addSomeElementsToList(lm);
-        list.setName("List");
-        jPanel4.add(list);
-
-        list.addListSelectionListener(listListener());// Add the Lists to some listeners
-
-        applyGapsListener(applyButton); // Do some action with Apply Gaps button
-
-        createButtonListener(button1); // Add the Button Listeners to the application
-        createButtonListener(button2);
-        createButtonListener(button3);
-        createButtonListener(button4);
-        createButtonListener(button5);
-
-        checkboxListener(checkbox1); // Add the checkbox Listeners to the Application
-        checkboxListener(checkbox2);
-        checkboxListener(checkbox3);
-
-        radioButtonListener(radiobutton1);
-        radioButtonListener(radiobutton2);
-        radioButtonListener(radiobutton3);
-
-        pane.add(jPanel1, BorderLayout.NORTH);
-        pane.add(jPanel2, BorderLayout.SOUTH);
-        pane.add(jPanel3, BorderLayout.CENTER);
-        pane.add(jPanel4, BorderLayout.EAST);
-
-        setPreferredSize(new Dimension(1024,768));
-    }
-
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method is invoked from the
-     * event dispatch thread.
-     */
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        DemoSwing frame = new DemoSwing("Demo Swing Application");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //Set up the content pane.
-        frame.addComponentsToPane(frame.getContentPane());
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    public static void main(String[] args) throws UnsupportedLookAndFeelException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        /* Use an appropriate Look and Feel */
-        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        /* Turn off metal's use of bold fonts */
-        UIManager.put("swing.boldMetal", Boolean.FALSE);
-
-        //Schedule a job for the event dispatch thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-
-            }
-        });
-    }
 }
