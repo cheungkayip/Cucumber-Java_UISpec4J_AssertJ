@@ -17,7 +17,7 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     private RadioButton radiobutton;
     private ListBox listbox;
     private ComboBox combobox1, combobox2;
-    private TextBox textbox;
+    private TextBox textbox, formattedTextbox;
     private Table table;
     private Tree tree;
     DemoSwing ds = new DemoSwing("Demo Swing Application");
@@ -180,5 +180,26 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
     public void i_should_check_if_abstractLabel_has_changed(String labelName) throws Throwable {
         String s = ds.setTheAbstractButtonLabel(abstractButton.getLabel());
         assertEquals(labelName,s);
+    }
+
+    /*** Start your testcase with the Formatted Fields*/
+    @When("^I should check for formatted textfield to be visible \"([^\"]*)\"$")
+    public void check_formatted_textfield_is_visible(String fieldValue) throws Throwable {
+        formattedTextbox = window.getInputTextBox("FormattedTextField");
+        assertEquals(true, formattedTextbox.isEnabled());
+        assertEquals(true, formattedTextbox.isVisible());
+        assertEquals(fieldValue, formattedTextbox.getText());
+    }
+
+    @Then("^I should fill in a different value \"([^\"]*)\" which is not allowed$")
+    public void fill_in_bad_value(String badValue) throws Throwable {
+        formattedTextbox.setText(badValue);
+        assertEquals("123-45-6789",formattedTextbox.getText());
+    }
+
+    @And("^I should fill in a good value \"([^\"]*)\" and check if this is ok$")
+    public void fill_in_good_value(String goodValue) throws Throwable {
+        formattedTextbox.setText(goodValue);
+        assertEquals("333-33-4444",formattedTextbox.getText());
     }
 }

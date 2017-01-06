@@ -9,11 +9,13 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -25,7 +27,7 @@ public class DemoSwing extends JFrame {
     private static ArrayList<String> itemList = new ArrayList<String>();
     private GridLayout gridLayout1 = new GridLayout(0,2);
     private GridLayout gridLayout2 = new GridLayout(0,3);
-    private GridLayout gridLayout3 = new GridLayout(9,2);
+    private GridLayout gridLayout3 = new GridLayout(10,2);
     private GridLayout gridLayout4 = new GridLayout(0,2);
 
     private JPanel jPanel1 = new JPanel(); // For the JLabel, JTextfields, JButtons
@@ -50,6 +52,7 @@ public class DemoSwing extends JFrame {
     private JLabel label1RadioButton = new JLabel("RadioButton 1: ");
     private JLabel label2RadioButton = new JLabel("RadioButton 2: ");
     private JLabel label3RadioButton = new JLabel("RadioButton 3: ");
+    private JLabel formattedFieldLabel;
 
     private JButton button1 = new JButton("Button1");
     private JButton button2 = new JButton("Button2");
@@ -59,7 +62,8 @@ public class DemoSwing extends JFrame {
     private JButton applyButton = new JButton("Apply gaps");
     private JButton fakeButton = new JButton("Just fake button");
 
-    public JTextField field1 = new JTextField("Result");
+    private JTextField field1 = new JTextField("Result");
+    private JFormattedTextField formattedTextField;
 
     private JCheckBox checkbox1 = new JCheckBox("Checkbox1");
     private JCheckBox checkbox2 = new JCheckBox("Checkbox2");
@@ -106,13 +110,15 @@ public class DemoSwing extends JFrame {
                     createAndShowGUI();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
 
             }
         });
     }
 
-    private void addComponentsToPane(final Container pane) throws IOException {
+    private void addComponentsToPane(final Container pane) throws IOException, ParseException {
         initGaps();
         jPanel1.setLayout(gridLayout1);
         jPanel2.setLayout(gridLayout2);
@@ -179,6 +185,10 @@ public class DemoSwing extends JFrame {
         jPanel3.add(abstractButton);
         createAbstractButtonListener(); // Listen to the button in order to decide which message will be displayed
 
+        createJFormattedTextField();
+        jPanel3.add(formattedFieldLabel);
+        jPanel3.add(formattedTextField);
+
         addSomeElementsToList(lm);
         list.setName("List");
         jPanel4.add(list);
@@ -214,7 +224,7 @@ public class DemoSwing extends JFrame {
      * this method is invoked from the
      * event dispatch thread.
      */
-    private static void createAndShowGUI() throws IOException {
+    private static void createAndShowGUI() throws IOException, ParseException {
         //Create and set up the window.
         DemoSwing frame = new DemoSwing("Demo Swing Application");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -223,6 +233,16 @@ public class DemoSwing extends JFrame {
         //Display the window.
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private void createJFormattedTextField() throws ParseException {
+        formattedFieldLabel = new JLabel("FormattedTextField");
+        MaskFormatter formatter = new MaskFormatter("###'-##'-####");
+        formattedTextField = new JFormattedTextField(formatter);
+        formattedTextField.setName("FormattedTextField");
+        formattedTextField.setValue("123-45-6789");
+        formattedTextField.setColumns(20);
+
     }
 
     public String setTheAbstractButtonLabel(String s) throws IOException {
