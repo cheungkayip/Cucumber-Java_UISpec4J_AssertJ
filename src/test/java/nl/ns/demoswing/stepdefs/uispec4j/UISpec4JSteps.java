@@ -64,8 +64,8 @@ public class UISpec4JSteps extends UISpecTestCase {
         checkIfTextboxIsVisible();
     }
 
-    @Then("^I click the checkbox")
-    public void i_click_the_checkbox() throws Throwable {
+    @Then("^I click the checkbox \"([^\"]*)\"$")
+    public void i_click_the_checkbox(String checkboxName) throws Throwable {
         Mouse.click(checkbox);// Click the button
     }
 
@@ -127,8 +127,8 @@ public class UISpec4JSteps extends UISpecTestCase {
         checkIfTextboxIsVisible();
     }
 
-    @Then("^I click the radiobutton")
-    public void i_click_the_radiobutton() throws Throwable {
+    @Then("^I click the radiobutton \"([^\"]*)\"$")
+    public void i_click_the_radiobutton(String radioButtonName) throws Throwable {
         Mouse.click(radiobutton);// Click the button
     }
 

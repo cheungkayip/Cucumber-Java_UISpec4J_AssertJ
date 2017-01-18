@@ -1,6 +1,7 @@
 package nl.ns.demoswing.stepdefs.assertj;
 
 import cucumber.api.java.After;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -8,10 +9,11 @@ import nl.ns.demoswing.impl.DemoSwing;
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.BasicRobot;
 import org.assertj.swing.core.Robot;
+import org.assertj.swing.data.TableCell;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.JTableFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import javax.swing.*;
@@ -23,7 +25,7 @@ public class AssertJSteps {
     private FrameFixture frame;
     private Robot robot;
 
-    @Before
+    @cucumber.api.java.Before
     public void preStepsTest() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         this.robot = BasicRobot.robotWithCurrentAwtHierarchy();
         DemoSwing.main(null);
@@ -32,12 +34,10 @@ public class AssertJSteps {
 
     @After
     public void cleanup() {
-        System.out.println("OutsideCleanUp");
         if (this.robot != null) {
             System.out.println("Cleanup");
             this.robot.cleanUp();
         }
-        System.out.println("outsideFrameCleanUp");
         if (this.frame != null) {
             System.out.println("frameCleanUp");
             this.frame.cleanUp();
@@ -47,7 +47,7 @@ public class AssertJSteps {
     /*** Generic Steps used by all Testcases*/
     @Given("^I should start the java swing gui")
     public void open_the_java_swing_gui() throws Throwable {
-        preStepsTest();
+
     }
 
     public void checkIfTextboxIsVisible() {
@@ -72,132 +72,96 @@ public class AssertJSteps {
         frame.button(buttonName).click();
     }
 
-//    /*** Start your testcase with the checkboxes*/
-//    @When("^I should check for JCheckbox if they are there \"([^\"]*)\"$")
-//    public void i_check_the_checkboxes(String checkboxText) throws Throwable {
-//        checkbox = window.getCheckBox(checkboxText);// 2. Verify Checkbox begin state
-//        assertEquals(true, checkbox.isVisible());// Verify JCheckbox is visible
-//        checkIfTextboxIsVisible();
-//    }
-//
-//    @Then("^I click the checkbox")
-//    public void i_click_the_checkbox() throws Throwable {
-//        Mouse.click(checkbox);// Click the button
-//    }
-//
-//    /*** Start your testcase with the JList*/
-//    @When("^I should check JList if it is visible \"([^\"]*)\"$")
-//    public void i_check_the_jlist(String jlistText) throws Throwable {
-//        // 2. Verify Checkbox begin state
-//        listbox = window.getListBox(jlistText);// Retrieve JList
-//        assertEquals(true, listbox.isVisible());// Verify JCheckbox is visible
-//
-//        checkIfTextboxIsVisible();
-//    }
-//
-//    @Then("^I click the \"([^\"]*)\"$")
-//    public void i_click_the_listitem(String itemName) throws Throwable {
-//        System.out.println("Listbox Name: " + listbox.getName());
-//        listbox.select(itemName);
-//
-//    }
-//
-//
-//    /*** Start your testcase with the JComboBox*/
-//    @When("^I should check JComboBox \"([^\"]*)\" and \"([^\"]*)\" to be visible on the page$")
-//    public void i_check_the_jcombobox(String hgapName, String vgapName) throws Throwable {
-//        // Verify Horizontal Gap
-//        combobox1 = window.getComboBox(hgapName);// Retrieve
-//        assertEquals(true, combobox1.isVisible());// Verify Horizontal is visible
-//
-//        // Verify Vertical Gap
-//        combobox2 = window.getComboBox(vgapName);// Retrieve
-//        assertEquals(true, combobox2.isVisible());// Verify Vertical is visible
-//        checkIfTextboxIsVisible();
-//    }
-//
-//    @Then("^I click \"([^\"]*)\" for the \"([^\"]*)\" combobox")
-//    public void i_click_the_jcomboboxitem(String itemName, String comboboxName) throws Throwable {
-//        if (comboboxName.contentEquals("horGap")) {
-////            combobox1.select(itemName);
-//            combobox1.select(itemName);
-//            System.out.println("Selected Index: " + combobox1.getAwtComponent().getSelectedItem().toString());
-//        } else {
-//            combobox2.select(itemName);
-//            System.out.println("Selected Index: " + combobox2.getAwtComponent().getSelectedItem().toString());
-//        }
-//
-//    }
-//
-//    @And("^I click the \"([^\"]*)\" button$")
-//    public void i_click_the_applygaps_button(String buttonName) throws Throwable {
-//        applyGaps = window.getButton(buttonName);
-//        Mouse.click(applyGaps);
-//    }
-//
-//    /*** Start your testcase with the JRadioButtons*/
-//    @When("^I should check for RadioButton if they are there \"([^\"]*)\"$")
-//    public void i_select_the_radiobutton(String radiobuttonText) throws Throwable {
-//        radiobutton = window.getRadioButton(radiobuttonText);
-//        assertEquals(true, radiobutton.isVisible());
-//        checkIfTextboxIsVisible();
-//    }
-//
-//    @Then("^I click the radiobutton")
-//    public void i_click_the_radiobutton() throws Throwable {
-//        Mouse.click(radiobutton);// Click the button
-//    }
-//
-//    /*** Start your testcase with the JTables*/
-//    @When("^I should check if JTable \"([^\"]*)\" is available$")
-//    public void i_check_if_jtable_is_available(String jTableText) throws Throwable {
-//        table = window.getTable(jTableText);
-//        assertEquals(true, table.isVisible());
-//        checkIfTextboxIsVisible();
-//    }
-//
-//    @Then("^I click the Row \"([^\"]*)\" and Column \"([^\"]*)\"$")
-//    public void i_click_the_item_in_table(int row, int column) throws Throwable {
-//        System.out.println("Row: " + row);
-//        System.out.println("Column: " + column);
-//        table.click(row, column);
-//    }
-//
-//    /*** Start your testcase with the Jtree*/
-//    @When("^I should check if the Jtree \"([^\"]*)\" is available$")
-//    public void i_check_if_jtree_is_available(String jtreeName) throws Throwable {
-//        tree = window.getTree(jtreeName);
-//        assertEquals(true, tree.isVisible());
-//
-//        checkIfTextboxIsVisible();
-//    }
-//
-//    @Then("^I click the Row \"([^\"]*)\" in the JTree$")
-//    public void i_click_the_item_in_table(String itemName) throws Throwable {
-//        tree.click(itemName);
-//    }
-//
+    /*** Start your testcase with the checkboxes*/
+    @When("^I should check for JCheckbox if they are there \"([^\"]*)\"$")
+    public void i_check_the_checkboxes(String checkboxText) throws Throwable {
+        frame.checkBox(checkboxText).requireVisible();
+    }
+
+    @Then("^I click the checkbox \"([^\"]*)\"$")
+    public void i_click_the_checkbox(String checkboxText) throws Throwable {
+       frame.checkBox(checkboxText).click();
+    }
+
+    /*** Start your testcase with the JList*/
+    @When("^I should check JList if it is visible \"([^\"]*)\"$")
+    public void i_check_the_jlist(String jlistText) throws Throwable {
+        frame.list(jlistText).requireVisible();
+    }
+
+    @Then("^I click the \"([^\"]*)\"$")
+    public void i_click_the_listitem(String itemName) throws Throwable {
+        frame.list("List").clickItem(itemName);
+    }
+
+
+    /*** Start your testcase with the JComboBox*/
+    @When("^I should check JComboBox \"([^\"]*)\" and \"([^\"]*)\" to be visible on the page$")
+    public void i_check_the_jcombobox(String hgapName, String vgapName) throws Throwable {
+        frame.comboBox(hgapName).requireVisible();
+        frame.comboBox(vgapName).requireVisible();
+    }
+
+    @Then("^I click \"([^\"]*)\" for the \"([^\"]*)\" combobox")
+    public void i_click_the_jcomboboxitem(String itemName, String comboboxName) throws Throwable {
+        frame.comboBox(comboboxName).selectItem(itemName).click();
+    }
+
+    @And("^I click the \"([^\"]*)\" button$")
+    public void i_click_the_applygaps_button(String buttonName) throws Throwable {
+        frame.button(buttonName).click();
+    }
+
+    /*** Start your testcase with the JRadioButtons*/
+    @When("^I should check for RadioButton if they are there \"([^\"]*)\"$")
+    public void i_select_the_radiobutton(String radiobuttonText) throws Throwable {
+        frame.radioButton(radiobuttonText).requireVisible();
+    }
+
+    @Then("^I click the radiobutton \"([^\"]*)\"$")
+    public void i_click_the_radiobutton(String radioButtonName) throws Throwable {
+        frame.radioButton(radioButtonName).click();
+    }
+
+    /*** Start your testcase with the JTables*/
+    @When("^I should check if JTable \"([^\"]*)\" is available$")
+    public void i_check_if_jtable_is_available(String jTableText) throws Throwable {
+        frame.table(jTableText).requireVisible();
+    }
+
+    @Then("^I click the Row \"([^\"]*)\" and Column \"([^\"]*)\"$")
+    public void i_click_the_item_in_table(int row, int column) throws Throwable {
+        JTableFixture cell = frame.table("Table Example").selectCells(TableCell.row(row).column(column));
+        cell.click();
+    }
+
+    /*** Start your testcase with the Jtree*/
+    @When("^I should check if the Jtree \"([^\"]*)\" is available$")
+    public void i_check_if_jtree_is_available(String jtreeName) throws Throwable {
+        frame.tree(jtreeName).requireVisible();
+    }
+
+    @Then("^I click the Row \"([^\"]*)\" in the \"([^\"]*)\"$")
+    public void i_click_the_item_in_table(int itemName, String jtreeName) throws Throwable {
+        frame.tree(jtreeName).clickRow(itemName);
+    }
+
 //    /*** Start your testcase with the AbstractButton*/
 //    @Then("^I should check if the AbstractButton label has the text \"([^\"]*)\"$")
 //    public void check_if_the_abstractbutton_is_visible(String buttonBeginStateLabel) throws Throwable {
-//        abstractButton = window.getButton("AbstractButton");
-//        assertEquals(true, abstractButton.isEnabled());
-//        assertEquals(true, abstractButton.isVisible());
-//        String s = ds.setTheAbstractButtonLabel(abstractButton.getLabel());
-//        assertEquals(buttonBeginStateLabel, s);
+//        frame.button(buttonBeginStateLabel).text().equals("AbstractButton");
 //    }
 //
 //    @Then("^I click the AbstractButton$")
 //    public void i_click_the_abstractbutton() throws Throwable {
-//        abstractButton.click();
+//        frame.button("AbstractButton").click();
 //    }
 //
 //    @And("^I should see the AbstractButton label changed to \"([^\"]*)\"$")
 //    public void i_should_check_if_abstractLabel_has_changed(String labelName) throws Throwable {
-//        String s = ds.setTheAbstractButtonLabel(abstractButton.getLabel());
-//        assertEquals(labelName,s);
+//        frame.button("AbstractButton").requireText(labelName);
 //    }
-//
+
 //    /*** Start your testcase with the Formatted Fields*/
 //    @When("^I should check for formatted textfield to be visible \"([^\"]*)\"$")
 //    public void check_formatted_textfield_is_visible(String fieldValue) throws Throwable {

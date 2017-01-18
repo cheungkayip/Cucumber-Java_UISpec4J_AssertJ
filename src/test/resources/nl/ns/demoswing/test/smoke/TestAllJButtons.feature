@@ -1,5 +1,5 @@
 # Created by kayipcheung at 21/12/2016
-@Smoke
+@Buttons
 Feature: JButton
   As an user
   I want to start the application

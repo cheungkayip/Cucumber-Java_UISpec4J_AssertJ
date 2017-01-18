@@ -8,6 +8,6 @@ Feature: JTree
   Scenario: Click from JTree1 the root
     Given I should start the java swing gui
     When I should check if the Jtree "JTree1" is available
-    Then I click the Row "V1 One" in the JTree
+    Then I click the Row "1" in the "JTree1"
     And I should see the JTextField change to "You have selected V1 One"
 

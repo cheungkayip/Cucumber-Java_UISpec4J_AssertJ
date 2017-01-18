@@ -125,8 +125,8 @@ public class DemoSwing extends JFrame {
         initGaps();
 
         jframe.setName("Demo Swing Application");
-        horGapComboBox.setName("Horizontal Gap");
-        verGapComboBox.setName("Vertical Gap");
+        horGapComboBox.setName("horGap");
+        verGapComboBox.setName("verGap");
         jPanel1.setName("JPanel1");
         jPanel2.setName("JPanel2");
         jPanel3.setName("JPanel3");
@@ -136,7 +136,7 @@ public class DemoSwing extends JFrame {
         button3.setName("Button3");
         button4.setName("Long-Named Button 4");
         button5.setName("Button5");
-        applyButton.setName("Apply Gaps");
+        applyButton.setName("Apply gaps");
         fakeButton.setName("Just fake button");
         abstractButton.setName("AbstractButton");
         field1.setName("Result");
@@ -289,7 +289,6 @@ public class DemoSwing extends JFrame {
         org.jsoup.nodes.Document doc = Jsoup.parse(s);
         Elements fontAttribute = doc.select("font");
         String fa = fontAttribute.text();
-        System.out.println(" fontAttribute: " + fa);
         // Return a nicely formed value text instead of HTML content
         return fa;
     }
@@ -361,7 +360,6 @@ public class DemoSwing extends JFrame {
                 String data = nodeInfo.toString();
                 field1.setText("");
                 field1.setText("You have selected " + data);
-                System.out.println("Data: " + data);
             }
         });
     }
@@ -402,7 +400,6 @@ public class DemoSwing extends JFrame {
                     for (int i = 0, n = selections.length; i < n; i++) {
                         field1.setText("");
                         field1.setText("You have selected " + selectionValues[i]);
-                        System.out.println("  Selections: " + selections[i] + "/" + selectionValues[i] + " ");
                     }
                 }
             }
