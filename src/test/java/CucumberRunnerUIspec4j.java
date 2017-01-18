@@ -14,6 +14,6 @@ import org.junit.runner.RunWith;
                 "@JTree, " +
                 "@AbstractButton"
         },
-        glue = {"nl.ns.demoswing.stepdefs"})
-public class CucumberRunner {
+        glue = {"nl.ns.demoswing.stepdefs.uispec4j"})
+public class CucumberRunnerUIspec4j {
 }

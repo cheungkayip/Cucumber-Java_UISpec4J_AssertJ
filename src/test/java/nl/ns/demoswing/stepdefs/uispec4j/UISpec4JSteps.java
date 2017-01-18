@@ -1,4 +1,4 @@
-package nl.ns.demoswing.stepdefs;
+package nl.ns.demoswing.stepdefs.uispec4j;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -8,7 +8,7 @@ import nl.ns.demoswing.impl.DemoSwing;
 import org.uispec4j.*;
 import org.uispec4j.interception.MainClassAdapter;
 
-public class BasicJavaSwingSteps extends UISpecTestCase {
+public class UISpec4JSteps extends UISpecTestCase {
 
     private Window window;
     private Button button, applyGaps;
@@ -51,8 +51,8 @@ public class BasicJavaSwingSteps extends UISpecTestCase {
 
     }
 
-    @Then("^I click the button")
-    public void i_click_button() throws Throwable {
+    @Then("^I click the button \"([^\"]*)\"$")
+    public void i_click_button(String buttonName) throws Throwable {
         Mouse.click(button);// Click the button
     }
 

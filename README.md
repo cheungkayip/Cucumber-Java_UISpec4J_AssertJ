@@ -12,7 +12,7 @@ What did i Use?
 
 This demo swing application is an example on how to use Cucumber + UISpec4J
 
-Run the example CucumberRunner as a JUnitTest and you will see it testing the demoApp.
+Run the example CucumberRunnerUIspec4j as a JUnitTest and you will see it testing the demoApp.
 Make sure to set the Java version to 1.6 otherwise it won't work.
 I Am still figuring out a way to run it on 1.8. 
 

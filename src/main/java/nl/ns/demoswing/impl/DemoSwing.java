@@ -24,7 +24,10 @@ public class DemoSwing extends JFrame {
     private final static int maxGap = 20;
     private static int abstractCounter = 0;
 
+    private JFrame jframe = new JFrame("Demo Swing Application");
+
     private static ArrayList<String> itemList = new ArrayList<String>();
+    private GridLayout frameLayout = new GridLayout(0,2);
     private GridLayout gridLayout1 = new GridLayout(0,2);
     private GridLayout gridLayout2 = new GridLayout(0,3);
     private GridLayout gridLayout3 = new GridLayout(10,2);
@@ -120,10 +123,45 @@ public class DemoSwing extends JFrame {
 
     private void addComponentsToPane(final Container pane) throws IOException, ParseException {
         initGaps();
+
+        jframe.setName("Demo Swing Application");
+        horGapComboBox.setName("Horizontal Gap");
+        verGapComboBox.setName("Vertical Gap");
+        jPanel1.setName("JPanel1");
+        jPanel2.setName("JPanel2");
+        jPanel3.setName("JPanel3");
+        jPanel4.setName("JPanel4");
+        button1.setName("Button1");
+        button2.setName("Button2");
+        button3.setName("Button3");
+        button4.setName("Long-Named Button 4");
+        button5.setName("Button5");
+        applyButton.setName("Apply Gaps");
+        fakeButton.setName("Just fake button");
+        abstractButton.setName("AbstractButton");
+        field1.setName("Result");
+
+        checkbox1.setName("Checkbox1");
+        checkbox2.setName("Checkbox2");
+        checkbox3.setName("Checkbox3");
+        list.setName("List");
+        radiobutton1.setName("RadioButton1");
+        radiobutton2.setName("RadioButton2");
+        radiobutton3.setName("RadioButton3");
+//        jtree1.setName("Tree1");
+//        jtree2.setName("Tree2");
+//        pane1.setName("ScrollPane1");
+//        pane2.setName("ScrollPane2");
+
+        jframe.setLayout(frameLayout);
         jPanel1.setLayout(gridLayout1);
         jPanel2.setLayout(gridLayout2);
         jPanel3.setLayout(gridLayout3);
         jPanel4.setLayout(gridLayout4);
+        jframe.getContentPane().add(jPanel1);
+        jframe.getContentPane().add(jPanel2);
+        jframe.getContentPane().add(jPanel3);
+        jframe.getContentPane().add(jPanel4);
 
         //Set up components preferred size
         Dimension buttonSize = fakeButton.getPreferredSize();
