@@ -18,6 +18,8 @@ import org.junit.runner.RunWith;
 
 import javax.swing.*;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 @GUITest
 @RunWith(GUITestRunner.class)
 public class AssertJSteps {
@@ -29,6 +31,7 @@ public class AssertJSteps {
     public void preStepsTest() throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         this.robot = BasicRobot.robotWithCurrentAwtHierarchy();
         DemoSwing.main(null);
+
         this.frame = WindowFinder.findFrame(DemoSwing.class).using(this.robot);
     }
 
@@ -146,40 +149,37 @@ public class AssertJSteps {
         frame.tree(jtreeName).clickRow(itemName);
     }
 
-//    /*** Start your testcase with the AbstractButton*/
-//    @Then("^I should check if the AbstractButton label has the text \"([^\"]*)\"$")
-//    public void check_if_the_abstractbutton_is_visible(String buttonBeginStateLabel) throws Throwable {
-//        frame.button(buttonBeginStateLabel).text().equals("AbstractButton");
-//    }
-//
-//    @Then("^I click the AbstractButton$")
-//    public void i_click_the_abstractbutton() throws Throwable {
-//        frame.button("AbstractButton").click();
-//    }
-//
-//    @And("^I should see the AbstractButton label changed to \"([^\"]*)\"$")
-//    public void i_should_check_if_abstractLabel_has_changed(String labelName) throws Throwable {
-//        frame.button("AbstractButton").requireText(labelName);
-//    }
+    /*** Start your testcase with the AbstractButton*/
+    @Then("^I should check if the AbstractButton label has the text \"([^\"]*)\"$")
+    public void check_if_the_abstractbutton_is_visible(String buttonBeginStateLabel) throws Throwable {
+        frame.button("AbstractButton").text().equals(buttonBeginStateLabel);
+    }
 
-//    /*** Start your testcase with the Formatted Fields*/
-//    @When("^I should check for formatted textfield to be visible \"([^\"]*)\"$")
-//    public void check_formatted_textfield_is_visible(String fieldValue) throws Throwable {
-//        formattedTextbox = window.getInputTextBox("FormattedTextField");
-//        assertEquals(true, formattedTextbox.isEnabled());
-//        assertEquals(true, formattedTextbox.isVisible());
-//        assertEquals(fieldValue, formattedTextbox.getText());
-//    }
-//
-//    @Then("^I should fill in a different value \"([^\"]*)\" which is not allowed$")
-//    public void fill_in_bad_value(String badValue) throws Throwable {
-//        formattedTextbox.setText(badValue);
-//        assertEquals("123-45-6789",formattedTextbox.getText());
-//    }
-//
-//    @And("^I should fill in a good value \"([^\"]*)\" and check if this is ok$")
-//    public void fill_in_good_value(String goodValue) throws Throwable {
-//        formattedTextbox.setText(goodValue);
-//        assertEquals("333-33-4444",formattedTextbox.getText());
-//    }
+    @Then("^I click the AbstractButton$")
+    public void i_click_the_abstractbutton() throws Throwable {
+        frame.button("AbstractButton").click();
+    }
+
+    @And("^I should see the AbstractButton label changed to \"([^\"]*)\"$")
+    public void i_should_check_if_abstractLabel_has_changed(String labelName) throws Throwable {
+        frame.button("AbstractButton").text().equals(labelName);
+    }
+
+    /*** Start your testcase with the Formatted Fields*/
+    @When("^I should check for formatted textfield to be visible \"([^\"]*)\"$")
+    public void check_formatted_textfield_is_visible(String fieldValue) throws Throwable {
+        frame.textBox("FormattedTextField").requireVisible();
+    }
+
+    @Then("^I should fill in a different value \"([^\"]*)\" which is not allowed$")
+    public void fill_in_bad_value(String badValue) throws Throwable {
+        frame.textBox("FormattedTextField").setText(badValue);
+        assertEquals("123-45-6789",frame.textBox("FormattedTextField").text());
+    }
+
+    @And("^I should fill in a good value \"([^\"]*)\" and check if this is ok$")
+    public void fill_in_good_value(String goodValue) throws Throwable {
+        frame.textBox("FormattedTextField").setText(goodValue);
+        assertEquals("333-33-4444",frame.textBox("FormattedTextField").text());
+    }
 }

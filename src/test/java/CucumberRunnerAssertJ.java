@@ -9,7 +9,9 @@ import org.junit.runner.RunWith;
                 "@Lists, " +
                 "@Comboboxes, " +
                 "@Radiobuttons, " +
-                "@JTree, "
+                "@JTree, " +
+                "@FormattedTextField, " +
+                "@AbstractButton"
                 },
         glue = {"nl.ns.demoswing.stepdefs.assertj"})
 public class CucumberRunnerAssertJ {

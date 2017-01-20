@@ -85,6 +85,7 @@ public class DemoSwing extends JFrame {
     private JScrollPane pane2;
 
     private AbstractButton abstractButton = new JButton("AbstractButton");
+    private String abstractButtonText = null;
 
     public DemoSwing(String name) {
         super(name);
@@ -290,6 +291,7 @@ public class DemoSwing extends JFrame {
         Elements fontAttribute = doc.select("font");
         String fa = fontAttribute.text();
         // Return a nicely formed value text instead of HTML content
+        System.out.println("Nicely formed HTML: " + fa);
         return fa;
     }
 
@@ -320,16 +322,18 @@ public class DemoSwing extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getID() == ActionEvent.ACTION_FIRST && abstractCounter == 0) {
                     try {
-                        setTheAbstractButtonLabel("<html>Abstract Button<br><font face='courier new'"
+                        abstractButtonText = setTheAbstractButtonLabel("<html>Abstract Button<br><font face='courier new'"
                                 + " color=red>(Good Job! You have clicked me the first time!)</font></html>");
+                        System.out.println("TryBlock: " + abstractButtonText);
                         abstractCounter++;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
                     try {
-                        setTheAbstractButtonLabel("<html>Abstract Button<br><font face='courier new'"
+                        abstractButtonText = setTheAbstractButtonLabel("<html>Abstract Button<br><font face='courier new'"
                                 + " color=red>(What!? You have clicked me again??)</font></html>");
+                        System.out.println("TryBlock: " + abstractButtonText);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
